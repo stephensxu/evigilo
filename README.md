@@ -12,13 +12,25 @@ Evigilo is specifically designed to be used as a microservice with **zero** depe
 
 ### Why not use papertrail or any other db-centric solution?
 
+#### Micro Service
 We already have a pretty extensive messaging infrastructure at Gogobot and we try to refactor all the non-user-centric-logic out to micro-services.
 
 It also makes more sense that this code will be external, without cluttering the application with more code.
 
+#### Flexible
+
 You can use whatever you want to track changes in your app:
 
 You can tail logs and POST them to the API, you can use curl, you can use the [gogobot/evigilo_api_consumer](https://github.com/gogobot/evigilo_api_consumer), you have all the flexibility you need to make it count.
+
+
+#### Database agnostic
+
+You can track changes on all your databases (MySQL, Postgres, Mongo, Ms-SQL), as long as you send the `data` field, you can track simply anything you’d like.
+
+#### Pluggable
+
+Next on the Roadmap is to make it pluggable so you can ship the changelog anywhere you want or use a different storage engine (more to come on this soon)
 
 
 ### Plugins support (0.2.0)
