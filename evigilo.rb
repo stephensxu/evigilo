@@ -16,6 +16,11 @@ class Evigilo < Sinatra::Base
     require File.join(Dir.pwd, file_path)
   end
 
+  # Mainly to test on Heroku that it works and that the DB connection is valid
+  get '/' do
+    "IT Works!!! You have #{ChangeLog.count} items in the database"
+  end
+
   post '/store/:table_name/:id/:action' do
     content_type :json
 
