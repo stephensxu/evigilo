@@ -2,10 +2,15 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require './environments'
 
-Dir.glob('./{models,helpers,controllers}/*.rb').each { |file| require file }
 
 class Evigilo < Sinatra::Base
   register Sinatra::ActiveRecordExtension
+
+  Dir.glob('./{models,helpers,controllers}/*.rb').each { |file| require file }
+
+  Dir["#{app.config_directory}/**/*.rb"].sort.each do |file_path|
+    require File.join(Dir.pwd, file_path)
+  end
 
   post '/store/:table_name/:id/:action' do
     content_type :json
