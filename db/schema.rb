@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141222093804) do
+ActiveRecord::Schema.define(version: 20141222150038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,5 +26,8 @@ ActiveRecord::Schema.define(version: 20141222093804) do
     t.datetime "updated_at"
     t.string   "version"
   end
+
+  add_index "change_logs", ["object_name", "object_id"], name: "index_change_logs_on_object_name_and_object_id", using: :btree
+  add_index "change_logs", ["version"], name: "index_change_logs_on_version", using: :btree
 
 end
