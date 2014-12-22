@@ -57,6 +57,17 @@ To keep consistency, the terms (params) of the API are kept across all the endpo
 
 There are **no manipulations** on the data you pass in, if you send `Users` as the table name, it will be stored as is, same for ids and the data/snapshot JSON.
 
+
+### Deployment
+
+Application is fully compatible with Heroku, you can deploy it to Heroku with just a few easy steps
+
+```shell
+$ heroku create <your-selected-application-name>.
+$ git push heroku master
+$ heroku run rake db:migrate
+```
+
 ### Store action
 
 The `store` endpoint requires you to send a `data` field with a JSON format for the changelog of the object.
