@@ -6,13 +6,16 @@
 
 Evigilo is a minimalist API to store/track your database changes.
 
+Evigilo is specifically designed to be used as a microservice with **zero** dependencies on your current application.
+
 ## Why?
 
 ### Why not use papertrail or any other db-centric solution?
 
 We already have a pretty extensive messaging infrastructure at Gogobot and we try to refactor all the non-user-centric-logic out to micro-services.
 
-	
+It also makes more sense that this code will be external, without cluttering the application with more code.
+
 ### Plugins support (Planned)
 
 We plan on adding plugin support (similar to what I did for [cashier](https://github.com/ahawkins/cashier)), this means, you will be able to add `evigilo-aws` and store the change data on `AWS::S3` as JSON files.
