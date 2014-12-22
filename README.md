@@ -16,6 +16,11 @@ We already have a pretty extensive messaging infrastructure at Gogobot and we tr
 
 It also makes more sense that this code will be external, without cluttering the application with more code.
 
+You can use whatever you want to track changes in your app:
+
+You can tail logs and POST them to the API, you can use curl, you can use the [gogobot/evigilo_api_consumer](https://github.com/gogobot/evigilo_api_consumer), you have all the flexibility you need to make it count.
+
+
 ### Plugins support (0.2.0)
 
 One of the things for the soon coming version of Evigilo is plugin support.
