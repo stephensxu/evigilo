@@ -141,6 +141,17 @@ SAMPLE RESPONSE:
 ```
 
 
+## Contributing
+
+1. Fork it!
+2. Create your feature branch: `git checkout -b feature/my-new-feature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin feature/my-new-feature`
+5. Submit a pull request :D]
+
+Please make sure you have tests that cover the core functionality of what you are adding.
+
+Feel free to open an issue first in order to discuss the bug/feature you are addressing.
 
 ## Credits
 
