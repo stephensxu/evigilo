@@ -19,10 +19,22 @@ class Evigilo < Sinatra::Base
   end
 
   get '/versions/:table_name/:id' do
-    ChangeLog.where(object_name: params[:object_name], object_id: params[:object_id]).pluck(:version, :action)
+    content_type :json
+    versions = ChangeLog.where(object_name: params[:table_name], object_id: params[:id]).pluck(:version)
+
+    { result: 'ok', versions: versions }.to_json
   end
 
   get '/versions/:version' do
+    content_type :json
+
+    changelog = ChangeLog.where(version: params[:version]).first
+
+    if changelog
+      { result: 'ok', data: changelog.data, snapshot: changelog.snapshot }.to_json
+    else
+      halt 404, "Version was not found"
+    end
 
   end
 end

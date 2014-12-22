@@ -16,12 +16,8 @@ require "database_cleaner"
 RSpec.configure do |config|
   include Rack::Test::Methods
 
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with :truncation
-  end
-
-  config.after(:each) do
+  config.before(:each) do
+    DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean
   end
 
