@@ -42,6 +42,15 @@ If you have plugin suggestion, feel free to open a PR/issue.
 
 * Clone the repository.
 * Run `bundle install`.
+* Run and follow the prompt:
+```shell
+createuser -P --interactive evigilo
+Enter password for new role:
+Enter it again:
+Shall the new role be a superuser? (y/n) n
+Shall the new role be allowed to create databases? (y/n) y
+Shall the new role be allowed to create more new roles? (y/n) n
+```
 * Run `bundle exec rake db:create` in order to create the development and test databases.
 * Run `rackup -p 4567` in order to run the web service.
 
