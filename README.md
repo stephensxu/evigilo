@@ -19,15 +19,36 @@ Evigilo is a minimalist API to store/track your database changes.
 
 ## API
 
-### Store Change
+Basic API Endpoints are:
 
-#### POST `/store/:table_name/:id/:action`
+* `/store/:table_name/:id/:action` Stores a change log for that object, returns a version id that you can store wherever you want (or don’t)
+* `/versions/:table_name/:id` Get all version of a specific object. Returns a list of versions from the server, no change data.
+* `/versions/:version` Get changelog data for a specific version
 
-* `table_name` The table name you are storing the change for eg: `users`
-* `id` row ID
-* `action` `create`, `update` or `destroy`, this is just a string, you can pass in anything you can identify in your own application (eg: `upsert`).
+### Api Terms
 
-You also need to pass `data` as a JSON field, the convention for storing the changes is:
+To keep consistency, the terms (params) of the API are kept across all the endpoints
+
+* `table_name` Just as it’s name suggest, the table (or collection) name
+* `id` Again, pretty self explanatory, pass the id of that row/object, this can be either string/integer, your choice
+* `version` The version id you want to query
+* `action` DB action relevant, this is a string so you can store anything you want eg: (create, update, delete, upsert)
+
+There are **no manipulations** on the data you pass in, if you send `Users` as the table name, it will be stored as is, same for ids and the data/snapshot JSON.
+
+### Store action
+
+The `store` endpoint requires you to send a `data` field with a JSON format for the changelog of the object.
+
+This is the standard:
+
+```javascript
+{
+  fieldname: [ was, now ]
+}
+```
+
+For example:
 
 ```javascript
 {
@@ -46,13 +67,79 @@ You also need to pass `data` as a JSON field, the convention for storing the cha
 }
 ```
 
+`snapshot
+
+
+### Store Change
+
+#### POST `/store/:table_name/:id/:action`
+
 SAMPLE POST:
 
 ```shell
 curl \
   -X POST \
-  "http://localhost:4567/track/users/1/create"  \
+  "http://localhost:4567/store/users/1/create"  \
   -F "data={\"name\":[\"Avi Tzurel\",\"Avi\"],\"perishable_token\":[\"XXXXX\",\"YYYYY\"],\"updated_at\":[\"2014-12-21T19:07:25Z\",\"2014-12-22T07:49:49Z\"]}"
 ```
 
-#### 
+SAMPLE RESPONSE:
+
+```javascript
+{
+    "result": true,
+    "version": "3d4415f0-baff-4ba9-bc70-11a95493dfb2"
+}
+```
+
+`result` field will be true of the version was indeed saved correctly to the database and false if it wasn’t
+
+#### GET `/versions/:table_name/:id`
+
+Will return all versions (or empty array)
+
+SAMPLE GET:
+
+```shell
+curl -X GET 'http://localhost:4567/versions/users/1'
+```
+
+SAMPLE RESPONSE:
+
+```javascript
+{
+    "result": "ok",
+    "versions": [
+        "d0568dc7-4b89-4542-ad16-7b1b9d252e2b",
+        "06bdfc59-e261-4c43-b25e-8df69a17423c",
+        "00e4759d-5099-4635-81e6-103f1ba43492",
+        "444e5058-f7ad-433f-9199-7a0492cc0be9",
+        "4e515bdc-735d-4ef4-a3c3-ec6947a2f479",
+        "7a1eeb73-5a12-48e3-9a82-90b16cd56a03",
+        "e052f9ce-dd79-4204-977f-ab1d63d14524",
+        "87fdcd17-602c-4f18-9dbf-f4565a3da4b4",
+        "ff35450b-572f-4b59-8cfe-b7235492fefa",
+        "8a2a0d15-698b-4b1c-b78c-4f6898b55a47",
+        "3c9323f3-4be9-4c6a-8e43-56ac89b83b56",
+        "3d4415f0-baff-4ba9-bc70-11a95493dfb2"
+    ]
+}
+```
+
+#### GET `/versions/:version`
+
+SAMPLE REQUEST: 
+
+```shell
+curl -X GET 'http://localhost:4567/versions/8a2a0d15-698b-4b1c-b78c-4f6898b55a47'
+```
+
+SAMPLE RESPONSE: 
+
+```javascript
+{"result":"ok","object_name":"users","object_id":"1","data":{"name":["Avi","NewAvi"]},"snapshot":null}
+```
+
+
+
+
