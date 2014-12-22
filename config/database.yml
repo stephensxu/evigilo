@@ -1,0 +1,17 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: evigilo
+  pool: 5
+  username: evigilo
+  password: evigilo
+  host: localhost
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: evigilo_test
+  pool: 5
+  username: evigilo
+  password: evigilo
+  host: localhost
