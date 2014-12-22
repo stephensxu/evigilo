@@ -29,6 +29,12 @@ Basically, you will be able to switch out the underlying DB with anything that y
 
 For example: One of the things we are doing is storing all the objects on AWS::S3 as well, for persistence, backup, analysis at a later stage.
 
+One more extremely useful plugin is to forward the changes to a stream using `kafka` `kinesis` or any other stream processing solution.
+
+The goal for the plugins is to have all the flexibility so you’ll be able to make it your own and make it work for your application.
+
+If you have plugin suggestion, feel free to open a PR/issue.
+
  
 ## Installation and running
 
