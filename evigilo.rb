@@ -5,10 +5,13 @@ require './environments'
 
 class Evigilo < Sinatra::Base
   register Sinatra::ActiveRecordExtension
+  configure do
+    set(:config_directory, "config/initializers")
+  end
 
   Dir.glob('./{models,helpers,controllers}/*.rb').each { |file| require file }
 
-  Dir["#{app.config_directory}/**/*.rb"].sort.each do |file_path|
+  Dir["#{settings.config_directory}/**/*.rb"].sort.each do |file_path|
     require File.join(Dir.pwd, file_path)
   end
 

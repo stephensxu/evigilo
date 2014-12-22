@@ -1,5 +1,3 @@
-set(:config_directory, "config/initializers")
-
 configure :development, :test do
   puts "ENV: #{ENV['RACK_ENV']}"
   dbconfig = YAML.load(File.read(File.join(File.dirname(__FILE__), 'config/database.yml')))
