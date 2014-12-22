@@ -4,6 +4,20 @@
 
 Evigilo is a minimalist API to store/track your database changes.
 
+
+## Installation and running
+
+### Running the API service
+
+* Clone the repository.
+* Run `bundle install`.
+* Run `bundle exec rake db:create` in order to create the development and test databases.
+* Run `rackup -p 4567` in order to run the web service.
+
+### Running tests
+
+* Running `bundle exec rake` will run the full test suite.
+
 ## API
 
 ### Store Change
