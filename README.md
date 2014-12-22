@@ -1,6 +1,6 @@
 # Evigilo
 
-![Travis](https://travis-ci.org/gogobot/evigilo.svg)
+[![Build Status](https://travis-ci.org/gogobot/evigilo.svg)](https://travis-ci.org/gogobot/evigilo)
 
 ![Evigilo Logo](http://aviioblog.s3.amazonaws.com/screenshot-kensodevVC75M0a.jpg-2014-12-22-np7n4.png)
 
