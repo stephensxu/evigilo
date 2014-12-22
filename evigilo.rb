@@ -5,6 +5,7 @@ require './environments'
 
 class Evigilo < Sinatra::Base
   register Sinatra::ActiveRecordExtension
+
   configure do
     set(:config_directory, "config/initializers")
   end
@@ -20,7 +21,7 @@ class Evigilo < Sinatra::Base
 
     changelog = ChangeLog.store_change(params[:table_name], params[:id], params[:action]) do |changelog|
       changelog.data     = params[:data]
-      changelog.snapshot = params[:snapshot]
+      changelog.snapshot = params[:snapshot] || {}
     end
     { result: !changelog.new_record?, version: changelog.version }.to_json
   end
