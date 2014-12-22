@@ -156,7 +156,18 @@ curl -X GET 'http://localhost:4567/versions/8a2a0d15-698b-4b1c-b78c-4f6898b55a47
 SAMPLE RESPONSE: 
 
 ```javascript
-{"result":"ok","object_name":"users","object_id":"1","data":{"name":["Avi","NewAvi"]},"snapshot":null}
+{
+    "result": "ok",
+    "object_name": "users",
+    "object_id": "1",
+    "data": {
+        "name": [
+            "Avi",
+            "NewAvi"
+        ]
+    },
+    "snapshot": null
+}
 ```
 
 
