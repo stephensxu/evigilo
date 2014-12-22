@@ -50,7 +50,7 @@ class Evigilo < Sinatra::Base
         snapshot: changelog.snapshot
       }.to_json
     else
-      { result: 'notok', message: 'version was not found' }
+      { result: 'notok', message: 'version was not found' }.to_json
     end
   end
 end

@@ -26,7 +26,7 @@ describe 'Store versions spec' do
 
   specify 'returns 404 if the version does not exist' do
     get '/versions/XXXXXXX'
-    expect(last_response.ok?).to eq(false)
+    expect(JSON.parse(last_response.body)['result']).to eq('notok')
   end
 
   specify 'returns all versions of the object' do
