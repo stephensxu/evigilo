@@ -1,5 +1,7 @@
 # Evigilo
 
+![Travis](https://travis-ci.org/gogobot/evigilo.svg)
+
 ![Evigilo Logo](http://aviioblog.s3.amazonaws.com/screenshot-kensodevVC75M0a.jpg-2014-12-22-np7n4.png)
 
 Evigilo is a minimalist API to store/track your database changes.
