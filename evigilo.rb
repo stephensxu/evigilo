@@ -50,7 +50,7 @@ class Evigilo < Sinatra::Base
         snapshot: changelog.snapshot
       }.to_json
     else
-      halt 404, "Version was not found"
+      { result: 'notok', message: 'version was not found' }
     end
   end
 end
