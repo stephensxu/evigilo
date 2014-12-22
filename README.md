@@ -142,4 +142,11 @@ SAMPLE RESPONSE:
 
 
 
+## Credits
+
+Avi Tzurel: [@KensoDev](http://twitter.com/KensoDev)
+
+## License
+
+Read more on the license file, but as usual, it’s MIT
 
