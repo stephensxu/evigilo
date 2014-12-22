@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Evigilo by gogobot</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Evigilo</h1>
+        <h2>Minimalist API to store and track your database changes</h2>
+        <a href="https://github.com/gogobot/evigilo" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="evigilo" class="anchor" href="#evigilo" aria-hidden="true"><span class="octicon octicon-link"></span></a>Evigilo</h1>
+
+<p><a href="https://travis-ci.org/gogobot/evigilo"><img src="https://travis-ci.org/gogobot/evigilo.svg" alt="Build Status"></a></p>
+
+<p><img src="http://aviioblog.s3.amazonaws.com/screenshot-kensodevVC75M0a.jpg-2014-12-22-np7n4.png" alt="Evigilo Logo"></p>
+
+<p>Evigilo is a minimalist API to store/track your database changes.</p>
+
+<p>Evigilo is specifically designed to be used as a microservice with <strong>zero</strong> dependencies on your current application.</p>
+
+<h2>
+<a id="why" class="anchor" href="#why" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why?</h2>
+
+<h3>
+<a id="why-not-use-papertrail-or-any-other-db-centric-solution" class="anchor" href="#why-not-use-papertrail-or-any-other-db-centric-solution" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why not use papertrail or any other db-centric solution?</h3>
+
+<p>We already have a pretty extensive messaging infrastructure at Gogobot and we try to refactor all the non-user-centric-logic out to micro-services.</p>
+
+<p>It also makes more sense that this code will be external, without cluttering the application with more code.</p>
+
+<h3>
+<a id="plugins-support-planned" class="anchor" href="#plugins-support-planned" aria-hidden="true"><span class="octicon octicon-link"></span></a>Plugins support (Planned)</h3>
+
+<p>We plan on adding plugin support (similar to what I did for <a href="https://github.com/ahawkins/cashier">cashier</a>), this means, you will be able to add <code>evigilo-aws</code> and store the change data on <code>AWS::S3</code> as JSON files.</p>
+
+<p>Once it’s on AWS as JSON you can use it with all other AWS services like lambda for example.</p>
+
+<h2>
+<a id="installation-and-running" class="anchor" href="#installation-and-running" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation and running</h2>
+
+<h3>
+<a id="running-the-api-service" class="anchor" href="#running-the-api-service" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running the API service</h3>
+
+<ul>
+<li>Clone the repository.</li>
+<li>Run <code>bundle install</code>.</li>
+<li>Run <code>bundle exec rake db:create</code> in order to create the development and test databases.</li>
+<li>Run <code>rackup -p 4567</code> in order to run the web service.</li>
+</ul>
+
+<h3>
+<a id="running-tests" class="anchor" href="#running-tests" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running tests</h3>
+
+<ul>
+<li>Running <code>bundle exec rake</code> will run the full test suite.</li>
+</ul>
+
+<h2>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span class="octicon octicon-link"></span></a>API</h2>
+
+<p>Basic API Endpoints are:</p>
+
+<ul>
+<li>
+<code>/store/:table_name/:id/:action</code> Stores a change log for that object, returns a version id that you can store wherever you want (or don’t)</li>
+<li>
+<code>/versions/:table_name/:id</code> Get all version of a specific object. Returns a list of versions from the server, no change data.</li>
+<li>
+<code>/versions/:version</code> Get changelog data for a specific version</li>
+</ul>
+
+<h3>
+<a id="api-terms" class="anchor" href="#api-terms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Api Terms</h3>
+
+<p>To keep consistency, the terms (params) of the API are kept across all the endpoints</p>
+
+<ul>
+<li>
+<code>table_name</code> Just as it’s name suggest, the table (or collection) name</li>
+<li>
+<code>id</code> Again, pretty self explanatory, pass the id of that row/object, this can be either string/integer, your choice</li>
+<li>
+<code>version</code> The version id you want to query</li>
+<li>
+<code>action</code> DB action relevant, this is a string so you can store anything you want eg: (create, update, delete, upsert)</li>
+</ul>
+
+<p>There are <strong>no manipulations</strong> on the data you pass in, if you send <code>Users</code> as the table name, it will be stored as is, same for ids and the data/snapshot JSON.</p>
+
+<h3>
+<a id="store-action" class="anchor" href="#store-action" aria-hidden="true"><span class="octicon octicon-link"></span></a>Store action</h3>
+
+<p>The <code>store</code> endpoint requires you to send a <code>data</code> field with a JSON format for the changelog of the object.</p>
+
+<p>This is the standard:</p>
+
+<div class="highlight highlight-javascript"><pre>{
+  fieldname<span class="pl-k">:</span> [ was, now ]
+}</pre></div>
+
+<p>For example:</p>
+
+<div class="highlight highlight-javascript"><pre>{
+    <span class="pl-s1"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+        <span class="pl-s1"><span class="pl-pds">"</span>Avi Tzurel<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>Avi<span class="pl-pds">"</span></span>
+    ],
+    <span class="pl-s1"><span class="pl-pds">"</span>perishable_token<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+        <span class="pl-s1"><span class="pl-pds">"</span>XXXXX<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>YYYY<span class="pl-pds">"</span></span>
+    ],
+    <span class="pl-s1"><span class="pl-pds">"</span>updated_at<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+        <span class="pl-s1"><span class="pl-pds">"</span>2014-12-21T19:07:25Z<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>2014-12-22T07:49:49Z<span class="pl-pds">"</span></span>
+    ]
+}</pre></div>
+
+<p>`snapshot</p>
+
+<h3>
+<a id="store-change" class="anchor" href="#store-change" aria-hidden="true"><span class="octicon octicon-link"></span></a>Store Change</h3>
+
+<h4>
+<a id="post-storetable_nameidaction" class="anchor" href="#post-storetable_nameidaction" aria-hidden="true"><span class="octicon octicon-link"></span></a>POST <code>/store/:table_name/:id/:action</code>
+</h4>
+
+<p>SAMPLE POST:</p>
+
+<div class="highlight highlight-shell"><pre>curl \
+  -X POST \
+  <span class="pl-s1"><span class="pl-pds">"</span>http://localhost:4567/store/users/1/create<span class="pl-pds">"</span></span>  \
+  -F <span class="pl-s1"><span class="pl-pds">"</span>data={<span class="pl-cce">\"</span>name<span class="pl-cce">\"</span>:[<span class="pl-cce">\"</span>Avi Tzurel<span class="pl-cce">\"</span>,<span class="pl-cce">\"</span>Avi<span class="pl-cce">\"</span>],<span class="pl-cce">\"</span>perishable_token<span class="pl-cce">\"</span>:[<span class="pl-cce">\"</span>XXXXX<span class="pl-cce">\"</span>,<span class="pl-cce">\"</span>YYYYY<span class="pl-cce">\"</span>],<span class="pl-cce">\"</span>updated_at<span class="pl-cce">\"</span>:[<span class="pl-cce">\"</span>2014-12-21T19:07:25Z<span class="pl-cce">\"</span>,<span class="pl-cce">\"</span>2014-12-22T07:49:49Z<span class="pl-cce">\"</span>]}<span class="pl-pds">"</span></span></pre></div>
+
+<p>SAMPLE RESPONSE:</p>
+
+<div class="highlight highlight-javascript"><pre>{
+    <span class="pl-s1"><span class="pl-pds">"</span>result<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">true</span>,
+    <span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>3d4415f0-baff-4ba9-bc70-11a95493dfb2<span class="pl-pds">"</span></span>
+}</pre></div>
+
+<p><code>result</code> field will be true of the version was indeed saved correctly to the database and false if it wasn’t</p>
+
+<h4>
+<a id="get-versionstable_nameid" class="anchor" href="#get-versionstable_nameid" aria-hidden="true"><span class="octicon octicon-link"></span></a>GET <code>/versions/:table_name/:id</code>
+</h4>
+
+<p>Will return all versions (or empty array)</p>
+
+<p>SAMPLE GET:</p>
+
+<div class="highlight highlight-shell"><pre>curl -X GET <span class="pl-s1"><span class="pl-pds">'</span>http://localhost:4567/versions/users/1<span class="pl-pds">'</span></span></pre></div>
+
+<p>SAMPLE RESPONSE:</p>
+
+<div class="highlight highlight-javascript"><pre>{
+    <span class="pl-s1"><span class="pl-pds">"</span>result<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ok<span class="pl-pds">"</span></span>,
+    <span class="pl-s1"><span class="pl-pds">"</span>versions<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+        <span class="pl-s1"><span class="pl-pds">"</span>d0568dc7-4b89-4542-ad16-7b1b9d252e2b<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>06bdfc59-e261-4c43-b25e-8df69a17423c<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>00e4759d-5099-4635-81e6-103f1ba43492<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>444e5058-f7ad-433f-9199-7a0492cc0be9<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>4e515bdc-735d-4ef4-a3c3-ec6947a2f479<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>7a1eeb73-5a12-48e3-9a82-90b16cd56a03<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>e052f9ce-dd79-4204-977f-ab1d63d14524<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>87fdcd17-602c-4f18-9dbf-f4565a3da4b4<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>ff35450b-572f-4b59-8cfe-b7235492fefa<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>8a2a0d15-698b-4b1c-b78c-4f6898b55a47<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>3c9323f3-4be9-4c6a-8e43-56ac89b83b56<span class="pl-pds">"</span></span>,
+        <span class="pl-s1"><span class="pl-pds">"</span>3d4415f0-baff-4ba9-bc70-11a95493dfb2<span class="pl-pds">"</span></span>
+    ]
+}</pre></div>
+
+<h4>
+<a id="get-versionsversion" class="anchor" href="#get-versionsversion" aria-hidden="true"><span class="octicon octicon-link"></span></a>GET <code>/versions/:version</code>
+</h4>
+
+<p>SAMPLE REQUEST: </p>
+
+<div class="highlight highlight-shell"><pre>curl -X GET <span class="pl-s1"><span class="pl-pds">'</span>http://localhost:4567/versions/8a2a0d15-698b-4b1c-b78c-4f6898b55a47<span class="pl-pds">'</span></span></pre></div>
+
+<p>SAMPLE RESPONSE: </p>
+
+<div class="highlight highlight-javascript"><pre>{
+    <span class="pl-s1"><span class="pl-pds">"</span>result<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ok<span class="pl-pds">"</span></span>,
+    <span class="pl-s1"><span class="pl-pds">"</span>object_name<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>users<span class="pl-pds">"</span></span>,
+    <span class="pl-s1"><span class="pl-pds">"</span>object_id<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>,
+    <span class="pl-s1"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+        <span class="pl-s1"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+            <span class="pl-s1"><span class="pl-pds">"</span>Avi<span class="pl-pds">"</span></span>,
+            <span class="pl-s1"><span class="pl-pds">"</span>NewAvi<span class="pl-pds">"</span></span>
+        ]
+    },
+    <span class="pl-s1"><span class="pl-pds">"</span>snapshot<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">null</span>
+}</pre></div>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<ol>
+<li>Fork it!</li>
+<li>Create your feature branch: <code>git checkout -b feature/my-new-feature</code>
+</li>
+<li>Commit your changes: <code>git commit -am 'Add some feature'</code>
+</li>
+<li>Push to the branch: <code>git push origin feature/my-new-feature</code>
+</li>
+<li>Submit a pull request :D]</li>
+</ol>
+
+<p>Please make sure you have tests that cover the core functionality of what you are adding.</p>
+
+<p>Feel free to open an issue first in order to discuss the bug/feature you are addressing.</p>
+
+<h2>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
+
+<p>Avi Tzurel: <a href="http://twitter.com/KensoDev">@KensoDev</a></p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Read more on the license file, but as usual, it’s MIT</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/gogobot/evigilo/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/gogobot/evigilo/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/gogobot/evigilo"></a> is maintained by <a href="https://github.com/gogobot">gogobot</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
