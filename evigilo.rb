@@ -1,13 +1,15 @@
 require 'sinatra'
 require 'sinatra/activerecord'
-require './environments'
-
 
 class Evigilo < Sinatra::Base
   register Sinatra::ActiveRecordExtension
 
-  configure do
-    set(:config_directory, "config/initializers")
+  require './environments'
+
+  unless ENV['RACK_ENV'] == 'test'
+    use Rack::Auth::Basic, "Protected Area" do |username, password|
+      username == settings.username && password == settings.password
+    end
   end
 
   Dir.glob('./{models,helpers,controllers}/*.rb').each { |file| require file }
@@ -16,9 +18,9 @@ class Evigilo < Sinatra::Base
     require File.join(Dir.pwd, file_path)
   end
 
-  # Mainly to test on Heroku that it works and that the DB connection is valid
   get '/' do
-    "IT Works!!! You have #{ChangeLog.count} items in the database"
+    content_type :json
+    { result: 'ok', count: ChangeLog.count }.to_json
   end
 
   post '/store/:table_name/:id/:action' do
@@ -28,6 +30,7 @@ class Evigilo < Sinatra::Base
       changelog.data     = params[:data]
       changelog.snapshot = params[:snapshot] || {}
     end
+
     { result: !changelog.new_record?, version: changelog.version }.to_json
   end
 

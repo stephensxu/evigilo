@@ -142,6 +142,7 @@ SAMPLE POST:
 
 ```shell
 curl \
+  --user test:test \
   -X POST \
   "http://localhost:4567/store/users/1/create"  \
   -F "data={\"name\":[\"Avi Tzurel\",\"Avi\"],\"perishable_token\":[\"XXXXX\",\"YYYYY\"],\"updated_at\":[\"2014-12-21T19:07:25Z\",\"2014-12-22T07:49:49Z\"]}"
@@ -165,7 +166,7 @@ Will return all versions (or empty array)
 SAMPLE GET:
 
 ```shell
-curl -X GET 'http://localhost:4567/versions/users/1'
+curl --user test:test -X GET 'http://localhost:4567/versions/users/1'
 ```
 
 SAMPLE RESPONSE:
@@ -195,7 +196,7 @@ SAMPLE RESPONSE:
 SAMPLE REQUEST: 
 
 ```shell
-curl -X GET 'http://localhost:4567/versions/8a2a0d15-698b-4b1c-b78c-4f6898b55a47'
+curl --user test:test -X GET 'http://localhost:4567/versions/8a2a0d15-698b-4b1c-b78c-4f6898b55a47'
 ```
 
 SAMPLE RESPONSE: 
