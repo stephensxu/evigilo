@@ -1,4 +1,3 @@
-before_install: gem install rake
 language: ruby
 rvm:
   - 2.1.5
