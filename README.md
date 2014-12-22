@@ -13,7 +13,7 @@ We already have a pretty extensive messaging infrastructure at Gogobot and we tr
 	
 ### Plugins support (Planned)
 
-We plan on adding plugin support (similar to what I did for cashier), this means, you will be able to add `evigilo-aws` and store the change data on `AWS::S3` as JSON files.
+We plan on adding plugin support (similar to what I did for [cashier](https://github.com/ahawkins/cashier)), this means, you will be able to add `evigilo-aws` and store the change data on `AWS::S3` as JSON files.
 
 Once it’s on AWS as JSON you can use it with all other AWS services like lambda for example.
 
