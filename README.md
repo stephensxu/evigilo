@@ -123,7 +123,7 @@ For example:
         ],
         "some_attr": [
             "1",
-            "2"
+            “2”∑
         ],
         "some_other_attr": [
             3,
@@ -131,9 +131,6 @@ For example:
         ]
     }
 }```
-
-`snapshot
-
 
 ### Store Change
 
