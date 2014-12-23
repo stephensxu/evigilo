@@ -4,7 +4,7 @@
 
 ![Evigilo Logo](http://aviioblog.s3.amazonaws.com/screenshot-kensodevVC75M0a.jpg-2014-12-22-np7n4.png)
 
-Evigilo is a minimalist API to store/track your database changes.
+Evigilo is a minimalist API to store/track your data chages in your database or any other storage.
 
 Evigilo is specifically designed to be used as a microservice with **zero** dependencies on your current application.
 
@@ -13,6 +13,7 @@ Evigilo is specifically designed to be used as a microservice with **zero** depe
 ### Why not use papertrail or any other db-centric solution?
 
 #### Micro Service
+
 We already have a pretty extensive messaging infrastructure at Gogobot and we try to refactor all the non-user-centric-logic out to micro-services.
 
 It also makes more sense that this code will be external, without cluttering the application with more code.
@@ -230,7 +231,7 @@ Feel free to open an issue first in order to discuss the bug/feature you are add
 
 ## Credits
 
-Avi Tzurel: [@KensoDev](http://twitter.com/KensoDev)
+Avi Tzurel: [@KensoDev](http://twitter.com/KensoDev), [blog](http://avi.io)
 
 ## License
 
