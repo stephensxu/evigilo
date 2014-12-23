@@ -102,7 +102,7 @@ $ heroku run rake db:migrate
 
 ### Store action
 
-The `store` endpoint requires you to send a `data` field with a JSON format for the changelog of the object.
+The `store` endpoint requires you to send a json in the body with a `data` field that contains the changes.
 
 This is the standard:
 
@@ -116,20 +116,21 @@ For example:
 
 ```javascript
 {
-    "name": [
-        "Avi Tzurel",
-        "Avi"
-    ],
-    "perishable_token": [
-        "XXXXX",
-        "YYYY"
-    ],
-    "updated_at": [
-        "2014-12-21T19:07:25Z",
-        "2014-12-22T07:49:49Z"
-    ]
-}
-```
+    "data": {
+        "name": [
+            "Avi",
+            "NewName"
+        ],
+        "some_attr": [
+            "1",
+            "2"
+        ],
+        "some_other_attr": [
+            3,
+            5
+        ]
+    }
+}```
 
 `snapshot
 
@@ -142,10 +143,11 @@ SAMPLE POST:
 
 ```shell
 curl \
-  --user test:test \
   -X POST \
-  "http://localhost:4567/store/users/1/create"  \
-  -F "data={\"name\":[\"Avi Tzurel\",\"Avi\"],\"perishable_token\":[\"XXXXX\",\"YYYYY\"],\"updated_at\":[\"2014-12-21T19:07:25Z\",\"2014-12-22T07:49:49Z\"]}"
+  --user test:test \
+  -H "Content-Type: application/json" \
+  -d '{"data": {"name":["Avi","NewName"],"some_attr":["1","2"],"some_other_attr":[3,5]} }' \
+  "http://localhost:4567/store/users/1/create"
 ```
 
 SAMPLE RESPONSE:
