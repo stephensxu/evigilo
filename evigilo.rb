@@ -30,8 +30,8 @@ class Evigilo < Sinatra::Base
     request_payload = ActiveSupport::JSON.decode(request.body.read)
 
     changelog = ChangeLog.store_change(params[:table_name], params[:id], params[:action]) do |changelog|
-      changelog.data     = request_payload[:data]
-      changelog.snapshot = request_payload[:snapshot] || {}
+      changelog.data     = request_payload['data']
+      changelog.snapshot = request_payload['snapshot'] || {}
     end
 
     { result: !changelog.new_record?, version: changelog.version }.to_json
