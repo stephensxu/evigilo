@@ -27,7 +27,7 @@ class Evigilo < Sinatra::Base
   post '/store/:table_name/:id/:action' do
     content_type :json
 
-    request_payload = MultiJson.load(request.env["rack.input"].read)
+    request_payload = MultiJson.load(request.body.read.to_s)
 
     changelog = ChangeLog.store_change(params[:table_name], params[:id], params[:action]) do |changelog|
       changelog.data     = request_payload['data']
