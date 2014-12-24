@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/activerecord'
+require 'multi_json'
 
 class Evigilo < Sinatra::Base
   register Sinatra::ActiveRecordExtension
@@ -24,10 +25,7 @@ class Evigilo < Sinatra::Base
   end
 
   post '/store/:table_name/:id/:action' do
-    content_type :json
-
-    request.body.rewind
-    request_payload = ActiveSupport::JSON.decode(request.body.read)
+    request_payload = MultiJson.load(request.env["rack.input"].read)
 
     changelog = ChangeLog.store_change(params[:table_name], params[:id], params[:action]) do |changelog|
       changelog.data     = request_payload['data']
