@@ -26,6 +26,7 @@ class Evigilo < Sinatra::Base
 
   post '/store/:table_name/:id/:action' do
     content_type :json
+    request.body.rewind
 
     request_payload = MultiJson.load(request.body.read.to_s)
 
