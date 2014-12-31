@@ -1,9 +1,9 @@
 require 'sinatra'
 require 'sinatra/activerecord'
-# require 'multi_json'
+require 'multi_json'
 # require 'json'
 # require 'json/pure'
-require 'rgeo/geo_json'
+# require 'rgeo/geo_json'
 
 class Evigilo < Sinatra::Base
   register Sinatra::ActiveRecordExtension
@@ -28,8 +28,8 @@ class Evigilo < Sinatra::Base
   end
 
   post '/store/:table_name/:id/:action' do
-    p "this is using rgeo parser"
-    request_payload = RGeo::GeoJSON.decode(request.env["rack.input"].read)
+    p "this is using multi_json"
+    request_payload = MultiJson.load(request.env["rack.input"].read)
 
     changelog = ChangeLog.store_change(params[:table_name], params[:id], params[:action]) do |changelog|
       changelog.data     = request_payload['data']
