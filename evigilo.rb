@@ -28,7 +28,7 @@ class Evigilo < Sinatra::Base
 
   post '/store/:table_name/:id/:action' do
     p "this is using json_pure parser"
-    request_payload = JSON[(request.env["rack.input"].read]
+    request_payload = JSON[(request.env["rack.input"].read)]
 
     changelog = ChangeLog.store_change(params[:table_name], params[:id], params[:action]) do |changelog|
       changelog.data     = request_payload['data']
