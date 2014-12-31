@@ -25,6 +25,7 @@ class Evigilo < Sinatra::Base
   end
 
   post '/store/:table_name/:id/:action' do
+    p "this is debugging branch"
     request_payload = MultiJson.load(request.env["rack.input"].read)
 
     changelog = ChangeLog.store_change(params[:table_name], params[:id], params[:action]) do |changelog|
@@ -33,7 +34,7 @@ class Evigilo < Sinatra::Base
     end
 
     { result: !changelog.new_record?, version: changelog.version }.to_json
-  end
+  end 
 
   get '/versions/:table_name/:id' do
     content_type :json
@@ -43,6 +44,7 @@ class Evigilo < Sinatra::Base
   end
 
   get '/versions/:version' do
+    p "this is debugging branch"
     content_type :json
 
     changelog = ChangeLog.where(version: params[:version]).first
