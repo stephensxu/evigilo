@@ -29,14 +29,14 @@ class Evigilo < Sinatra::Base
 
   post '/store/:table_name/:id/:action' do
     p "this is using multi_json"
-    request_payload = MultiJson.load(request.env["rack.input"].read)
+    # request_payload = MultiJson.load(request.env["rack.input"].read)
+    p request.env["rack.input"].read
+    # changelog = ChangeLog.store_change(params[:table_name], params[:id], params[:action]) do |changelog|
+    #   changelog.data     = request_payload['data']
+    #   changelog.snapshot = request_payload['snapshot'] || {}
+    # end
 
-    changelog = ChangeLog.store_change(params[:table_name], params[:id], params[:action]) do |changelog|
-      changelog.data     = request_payload['data']
-      changelog.snapshot = request_payload['snapshot'] || {}
-    end
-
-    { result: !changelog.new_record?, version: changelog.version }.to_json
+    # { result: !changelog.new_record?, version: changelog.version }.to_json
   end 
 
   get '/versions/:table_name/:id' do
