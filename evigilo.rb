@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/activerecord'
-require 'multi_json'
+# require 'multi_json'
+require 'json'
 
 class Evigilo < Sinatra::Base
   register Sinatra::ActiveRecordExtension
@@ -25,8 +26,8 @@ class Evigilo < Sinatra::Base
   end
 
   post '/store/:table_name/:id/:action' do
-    p "this is debugging branch"
-    request_payload = MultiJson.load(request.env["rack.input"].read)
+    p "this is using JSON json parser"
+    request_payload = JSON.load(request.env["rack.input"].read)
 
     changelog = ChangeLog.store_change(params[:table_name], params[:id], params[:action]) do |changelog|
       changelog.data     = request_payload['data']
